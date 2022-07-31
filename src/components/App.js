@@ -3,10 +3,21 @@ import AppRouter from "components/Router";
 import { auth } from "firebaseInstance";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(auth.currentUser);
+  const [initialized, setInitialized] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  React.useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setInitialized(true);
+    });
+  }, []);
   return (
     <>
-      <AppRouter isAuthenticated={isAuthenticated} />
+      {initialized ? <AppRouter isAuthenticated={isAuthenticated} /> : "Initializing..."}
       <footer>&copy; {new Date().getFullYear()} Twitter-Copy</footer>
     </>
   );
