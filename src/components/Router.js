@@ -5,7 +5,7 @@ import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Navigation from "components/Navigation";
 
-const AppRouter = ({ isAuthenticated }) => {
+const AppRouter = ({ isAuthenticated, userObj }) => {
   return (
     <Router>
       {isAuthenticated && <Navigation />}
@@ -13,7 +13,7 @@ const AppRouter = ({ isAuthenticated }) => {
         {isAuthenticated ? (
           <>
             <Route exact path="/">
-              <Home />
+              <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
               <Profile />
