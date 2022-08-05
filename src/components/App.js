@@ -10,16 +10,33 @@ function App() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setIsAuthenticated(true);
-        setUserObj(user);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       } else {
         setIsAuthenticated(false);
       }
       setInitialized(true);
     });
   }, []);
+  const refreshUserObj = () => {
+    const user = auth.currentUser;
+
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
   return (
     <>
-      {initialized ? <AppRouter isAuthenticated={isAuthenticated} userObj={userObj} /> : "Initializing..."}
+      {initialized ? (
+        <AppRouter isAuthenticated={isAuthenticated} userObj={userObj} refreshUserObj={refreshUserObj} />
+      ) : (
+        "Initializing..."
+      )}
       <footer>&copy; {new Date().getFullYear()} Twitter-Copy</footer>
     </>
   );
