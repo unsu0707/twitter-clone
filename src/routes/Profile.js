@@ -1,10 +1,10 @@
 import Tweet from "components/Tweet";
 import { auth, dbService } from "firebaseInstance";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Profile = ({ userObj, refreshUserObj }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [myTweets, setMyTweets] = React.useState([]);
   const [newDisplayName, setNewDisplayName] = React.useState("");
 
@@ -22,7 +22,7 @@ const Profile = ({ userObj, refreshUserObj }) => {
 
   const onLogOutClick = () => {
     auth.signOut();
-    history.push("/");
+    navigate("/");
   };
   const onChange = (e) => {
     const { value } = e.target;
@@ -38,10 +38,17 @@ const Profile = ({ userObj, refreshUserObj }) => {
     }
   };
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <input onChange={onChange} type="text" placeholder="Display Name" value={newDisplayName} />
-        <input type="submit" value="Update" />
+    <div className="container">
+      <form onSubmit={onSubmit} className="profileForm">
+        <input
+          onChange={onChange}
+          type="text"
+          autoFocus
+          placeholder="Display Name"
+          value={newDisplayName}
+          className="formInput"
+        />
+        <input type="submit" value="Update Profile" className="formBtn" style={{ marginTop: 10 }} />
       </form>
       {userObj && (
         <>
@@ -51,8 +58,10 @@ const Profile = ({ userObj, refreshUserObj }) => {
           ))}
         </>
       )}
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+      <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+        Log Out
+      </span>
+    </div>
   );
 };
 export default Profile;

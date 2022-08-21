@@ -1,3 +1,5 @@
+import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, storageService } from "firebaseInstance";
 import React from "react";
 
@@ -31,27 +33,36 @@ const Tweet = ({ tweetObj, isOwner }) => {
   };
 
   return (
-    <>
+    <div className="tweet">
       {editing ? (
-        <form onSubmit={onEditSubmit}>
-          <input value={newTweet} onChange={onChange} type="text" maxLength={120} />
-          <input type="submit" value="Update" />
-        </form>
+        <>
+          <form onSubmit={onEditSubmit} className="container tweetEdit">
+            <input value={newTweet} onChange={onChange} type="text" maxLength={120} autoFocus className="formInput" />
+            <input type="submit" value="Update" className="formBtn" />
+          </form>
+          <span onClick={toggleEditing} className="formBtn cancelBtn">
+            Cancel
+          </span>
+        </>
       ) : (
         <>
+          <h4>{tweetObj.text}</h4>
           <div>
-            {tweetObj.attachment && <img src={tweetObj.attachment} alt="attachment" width={240} />}
-            <span>{tweetObj.text}</span>
+            {tweetObj.attachment && <img src={tweetObj.attachment} alt="" />}
             {isOwner && (
-              <>
-                <button onClick={toggleEditing}>Edit</button>
-                <button onClick={onDeleteClick}>Delete</button>
-              </>
+              <div className="tweet__actions">
+                <span onClick={toggleEditing}>
+                  <FontAwesomeIcon icon={faPencilAlt} />
+                </span>
+                <span onClick={onDeleteClick}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </span>
+              </div>
             )}
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 
